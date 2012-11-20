@@ -406,6 +406,21 @@ typedef CGPoint KIFDisplacement;
     }];
 }
 
++ (id)stepToEnterText:(NSString *)text {
+    NSString *description = [NSString stringWithFormat:@"Type the text \"%@\"", text];
+    return [self stepWithDescription:description executionBlock:^(KIFTestStep *step, NSError **error) {
+        for (NSUInteger characterIndex = 0; characterIndex < [text length]; characterIndex++) {
+            NSString *characterString = [text substringWithRange:NSMakeRange(characterIndex, 1)];
+            
+            if (![self _enterCharacter:characterString]) {
+                // Attempt to cheat if we couldn't find the character
+                KIFTestCondition(NO, error, @"Failed to find key for character \"%@\"", characterString);
+            }
+        }
+        return KIFTestStepResultSuccess;
+    }];
+}
+
 + (id)stepToSelectPickerViewRowWithTitle:(NSString *)title;
 {
     NSString *description = [NSString stringWithFormat:@"Select the \"%@\" item from the picker", title];
