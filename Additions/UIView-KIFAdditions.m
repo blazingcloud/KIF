@@ -456,4 +456,31 @@ typedef struct __GSEvent * GSEventRef;
     return event;
 }
 
+- (void)longTapAtPoint:(CGPoint)point withDelay:(NSInteger)delay andCompletion:(void(^)(void)) completion;
+{
+    // Handle touches in the normal way for other views
+    UITouch *touch = [[UITouch alloc] initAtPoint:point inView:self];
+    [touch setPhase:UITouchPhaseBegan];
+    
+    // Create the touch event and send it to the application
+    UIEvent *event = [self _eventWithTouch:touch];
+    [[UIApplication sharedApplication] sendEvent:event];
+    
+    // Perform long touch
+    dispatch_after( dispatch_time( DISPATCH_TIME_NOW, NSEC_PER_SEC * delay), dispatch_get_current_queue(), ^(void){
+        [touch setPhase:UITouchPhaseEnded];
+        [[UIApplication sharedApplication] sendEvent:event];
+        
+        // Dispatching the event doesn't actually update the first responder, so fake it
+        if ([touch.view isDescendantOfView:self] && [self canBecomeFirstResponder]) {
+            [self becomeFirstResponder];
+        }
+        
+        if (completion) completion();
+    });
+    
+    // Release the touch
+    [touch release];
+}
+
 @end

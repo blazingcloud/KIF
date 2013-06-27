@@ -35,7 +35,7 @@
 - (void)flash;
 - (void)tap;
 - (void)tapAtPoint:(CGPoint)point;
-
+- (void)longTapAtPoint:(CGPoint)point withDelay:(NSInteger)delay andCompletion:(void(^)(void)) completion;
 /*!
  @method dragFromPoint:toPoint:
  @abstract Simulates dragging a finger on the screen between the given points.

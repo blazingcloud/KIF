@@ -317,6 +317,10 @@ typedef KIFTestStepResult (^KIFTestStepExecutionBlock)(KIFTestStep *step, NSErro
  */
 + (id)stepToTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits;
 
++ (id)stepToLongTapViewWithAccessibilityLabel:(NSString *)label value:(NSString *)value traits:(UIAccessibilityTraits)traits;
+
++ (id)stepToLongTapViewWithAccessibilityLabel:(NSString *)label;
+
 /*!
  @method stepToTapScreenAtPoint:
  @abstract A step that taps the screen at a particular point.
